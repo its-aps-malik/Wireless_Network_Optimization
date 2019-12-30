@@ -2,6 +2,8 @@ from tkinter import *
 import os
 from nodes import *
 from sink import *
+from update_log import *
+
 
 ###... (    ALL VARIABLES ARE DEFINED BELOW    ) ...###
 no_of_nodes = 0

@@ -1,6 +1,8 @@
 from threading import *
 from time import *
 from random import *
+from update_log import *
+
 
 ###... (    ALL VARIABLES ARE DEFINED BELOW    ) ...###
 node_list = []
@@ -97,4 +99,6 @@ def create_network_tree(total_nodes):
         print(connected_nodes[i])
     print("\n\n")
     print(len(connected_nodes))
+
+    add_log("Network created")
     
