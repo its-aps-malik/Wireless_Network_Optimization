@@ -1,12 +1,17 @@
-# this generates the GUI for our simulation
-
 from tkinter import *
 import os
+from nodes import *
+from sink import *
+
+###... (    ALL VARIABLES ARE DEFINED BELOW    ) ...###
+no_of_nodes = 0
+###... (    ALL VARIABLES ARE DEFINED ABOVE    ) ...###
+
+
 
 def changeLater():
     print("lol")
 
-no_of_nodes = 0
 
 def loadUI():
 
@@ -37,20 +42,25 @@ def loadUI():
 
     label1 = Label(root , text="Enter no. of nodes : ").pack()
 
-
-    #nodevalue = Spinbox(root , from_= 1 , to = 30).pack()
     nodevar = StringVar()
     nodevalue = Entry(root , textvariable = nodevar).pack()
 
     def getValue():
+        # creating and adding sink to network list
+        network_list.append(Sink())
+        
+        # creating nodes
         no_of_nodes = int(nodevar.get())
-        print( no_of_nodes )
+        for i in range (no_of_nodes):
+            node_list.append(Nodes(i))
+
+        #print(node_list)
+
+        create_network_tree(no_of_nodes)
 
 
     startbutton = Button(root , text = "Start" , fg="red" , command = getValue).pack()
 
-    
 
     root.mainloop()
-
 
