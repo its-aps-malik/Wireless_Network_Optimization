@@ -72,11 +72,7 @@ def create_network_tree(total_nodes):
     random_from_network_list = None
     
     for i in range(total_nodes):
-        print(total_nodes)
-        print(len(temp_node_list))
         random_from_node_list = temp_node_list.pop(randint(0,(total_nodes-1)-i))
-        print("node popped from temp node list = " + str(random_from_node_list))
-
         random_from_network_list = network_list[randint(0,(i))]
         random_from_node_list.level = random_from_network_list.level + 1
         if random_from_network_list.level == 0:
@@ -86,19 +82,9 @@ def create_network_tree(total_nodes):
 
         network_list.append(random_from_node_list)
     
-    print("\n\nFinal newtok list is as follows :-\n\n")
-    print("\n\n")
-    for i in range(len(network_list)):
-        print(network_list[i])
-    print("\n\n")
-    print(len(network_list))
-    print("\n\n")
-    print("\n\nConnected nodes list is as follows :-\n\n")
-    print("\n\n")
+
     for i in range(len(connected_nodes)):
-        print(connected_nodes[i])
-    print("\n\n")
-    print(len(connected_nodes))
+        print(connected_nodes[i]) 
 
     add_log("Network created")
     

@@ -56,8 +56,7 @@ def loadUI():
         for i in range (no_of_nodes):
             node_list.append(Nodes(i))
 
-        #print(node_list)
-
+        # creating random network
         create_network_tree(no_of_nodes)
 
 
@@ -65,4 +64,3 @@ def loadUI():
 
 
     root.mainloop()
-
