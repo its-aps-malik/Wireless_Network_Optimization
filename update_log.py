@@ -24,7 +24,7 @@ def make_project():
 def add_log(data):
     c_time = ctime()
     log_file = open(log_file_name , 'a')
-    log_file.writelines("\n" + str(c_time) + "\t" + data + "\n")
+    log_file.writelines("\n" + str(c_time) + " - " + str(time()) + " - " + data + "\n")
     log_file.flush()
     log_file.close()
 

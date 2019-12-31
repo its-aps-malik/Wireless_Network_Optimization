@@ -2,6 +2,7 @@ from threading import *
 from time import *
 from random import *
 from update_log import *
+from file_creator import *
 
 
 ###... (    ALL VARIABLES ARE DEFINED BELOW    ) ...###
@@ -26,6 +27,7 @@ class Nodes(Thread):
     def run (self):  #this methos is executed when a thread is started
         flag=True
         print(str(self.node_id) + " started")
+        add_log("Node " + str(self.node_id) + " started")
         i=0
         while flag :
             print (self.node_id, end=" ")
@@ -33,6 +35,7 @@ class Nodes(Thread):
             sleep(0.1)
             if i > 10:
                 i=0
+                add_log("Node " + str(self.node_id) + " stopped")
                 flag= False
 
     def get_node_id(self):
@@ -87,4 +90,7 @@ def create_network_tree(total_nodes):
         print(connected_nodes[i]) 
 
     add_log("Network created")
+
+    create_graph(connected_nodes)
+
     
