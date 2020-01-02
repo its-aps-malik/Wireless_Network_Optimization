@@ -2,7 +2,7 @@ from tkinter import *
 import os
 from nodes import *
 from sink import *
-from update_log import *
+from file_creator import *
 
 
 ###... (    ALL VARIABLES ARE DEFINED BELOW    ) ...###
@@ -58,6 +58,10 @@ def loadUI():
 
         # creating random network
         create_network_tree(no_of_nodes)
+
+        # starting node threads
+        for i in node_list:
+            i.start()
 
 
     startbutton = Button(root , text = "Start" , fg="red" , command = getValue).pack()

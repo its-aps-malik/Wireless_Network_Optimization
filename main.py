@@ -1,7 +1,6 @@
 import gui
 from time import *
-import os 
-from update_log import *
+from file_creator import *
 
 make_project()
 
