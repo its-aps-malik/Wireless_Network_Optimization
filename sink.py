@@ -2,8 +2,8 @@ from file_creator import *
 
 
 class Sink():
-    def __init__(self, sink_id = -1, r_energy = 0, level = 0):
-        self.sink_id = sink_id
+    def __init__(self, node_id = -1, r_energy = 0, level = 0):
+        self.node_id = node_id
         self.r_energy = r_energy
         self.level = level
 

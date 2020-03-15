@@ -59,6 +59,10 @@ def loadUI():
         # creating random network
         create_network_tree(no_of_nodes)
 
+        # creating excel files for each node
+        for i in network_list:
+            create_excel_file(i)
+
         # starting node threads
         for i in node_list:
             i.start()

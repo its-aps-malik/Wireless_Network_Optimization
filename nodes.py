@@ -34,8 +34,10 @@ class Nodes(Thread):
         add_log("creating packets for - " + str(self.node_id))
         for i in range(10):
             self.packet_list.append(Packet())
-            add_log("node-" + str(self.node_id) + "\t" + self.packet_list[i].packet_id + "\t" + self.packet_list[i].data)
+            
         add_log("packets created for - " + str(self.node_id))
+        generated_data_to_excel(self , "Generated data")
+
         j=0
         while flag :
             
@@ -74,7 +76,6 @@ class Nodes(Thread):
         rx_node = self.node_to_send
         print("sending data to " + str(rx_node))
 
-
     def recieve_packet(self):
         print("recieving packets...")
 
@@ -87,19 +88,10 @@ def create_network_tree(total_nodes):
     for i in range(total_nodes):
 
         random_from_node_list = temp_node_list.pop(randint(0,(total_nodes-1)-i))
-
         random_from_network_list = network_list[randint(0,(i))]
-        
         random_from_node_list.level = random_from_network_list.level + 1
-
-        random_from_node_list.set_rx_node(random_from_network_list)
-        
-
-        if random_from_network_list.level == 0:
-            connected_nodes.append( ( [random_from_node_list.node_id , random_from_node_list.level] , [random_from_network_list.sink_id , random_from_network_list.level] ) )
-        else:
-            connected_nodes.append( ( [random_from_node_list.node_id , random_from_node_list.level] , [random_from_network_list.node_id , random_from_network_list.level] ) )
-
+        random_from_node_list.set_rx_node(random_from_network_list)        
+        connected_nodes.append( ( [random_from_node_list.node_id , random_from_node_list.level] , [random_from_network_list.node_id , random_from_network_list.level] ) )
         network_list.append(random_from_node_list)
     
 
@@ -110,4 +102,3 @@ def create_network_tree(total_nodes):
 
     create_graph(connected_nodes)
 
-    
