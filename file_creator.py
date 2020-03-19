@@ -81,30 +81,40 @@ def create_excel_file(node):
 
 
 def generated_data_to_excel(node , sheet):
-
+    k=0
     if node.node_id == -1:
         
         file_name = "/home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "/sink.xlsx"
         stuff = dict()
-
         for i in node.packet_list:
             stuff["id"] = [i.packet_id]
             stuff["data"] = [i.data]
             stuff["priority"] = [i.priority]
             stuff["Creation_time"] = [i.gen_time]
-            df = pd.DataFrame(stuff)
+            if k == 0:
+                df = pd.DataFrame(stuff)
+            if k>0:
+                main_df = pd.read_excel(file_name , sheet_name=sheet)
+                df_curr = pd.DataFrame(stuff)
+                df = main_df.append(df_curr)
             with pd.ExcelWriter(file_name) as writer:
                 df.to_excel(writer , sheet_name = sheet , index=False)
+            k+=1
     else:
         
         file_name = "/home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "/node" + str(node.node_id + 1) + ".xlsx"
         stuff = dict()
-        
         for i in node.packet_list:
             stuff["id"] = [i.packet_id]
             stuff["data"] = [i.data]
             stuff["priority"] = [i.priority]
             stuff["Creation_time"] = [i.gen_time]
-            df = pd.DataFrame(stuff)
+            if k == 0:
+                df = pd.DataFrame(stuff)
+            if k>0:
+                main_df = pd.read_excel(file_name , sheet_name=sheet)
+                df_curr = pd.DataFrame(stuff)
+                df = main_df.append(df_curr)
             with pd.ExcelWriter(file_name) as writer:
                 df.to_excel(writer , sheet_name = sheet , index=False)
+            k+=1

@@ -27,8 +27,10 @@ class Nodes(Thread):
         self.packet_list = []
 
     def run (self):  #this methos is executed when a thread is started
+        
         flag=True
         add_log("Node " + str(self.node_id) + " started")
+
         
         # creating packets
         add_log("creating packets for - " + str(self.node_id))
@@ -37,6 +39,9 @@ class Nodes(Thread):
             self.packet_list.append(Packet(time()))
             
         add_log("packets created for - " + str(self.node_id))
+        
+        
+        # adding data to excel file...
         generated_data_to_excel(self , "Generated data")
 
         j=0
