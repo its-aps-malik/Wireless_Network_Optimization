@@ -83,20 +83,28 @@ def create_excel_file(node):
 def generated_data_to_excel(node , sheet):
 
     if node.node_id == -1:
+        
         file_name = "/home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "/sink.xlsx"
+        stuff = dict()
+
         for i in node.packet_list:
-            ###... data to write in excel file ...###
-            #node_id = 
-            ###... data to write in excel file ...###
-            pd.DataFrame()
-            sheet = sheet
-
-        with pd.ExcelWriter(file_name , mode = "a") as writer:
-            df.write_to_xlsx(writer , sheet_name = sheet)
+            stuff["id"] = [i.packet_id]
+            stuff["data"] = [i.data]
+            stuff["priority"] = [i.priority]
+            stuff["Creation_time"] = [i.gen_time]
+            df = pd.DataFrame(stuff)
+            with pd.ExcelWriter(file_name) as writer:
+                df.to_excel(writer , sheet_name = sheet , index=False)
     else:
+        
         file_name = "/home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "/node" + str(node.node_id + 1) + ".xlsx"
-        pd.DataFrame()
-        sheet = sheet
-
-        with pd.ExcelWriter(file_name , mode = "a") as writer:
-            df.write_to_xlsx(writer , sheet_name = sheet)
+        stuff = dict()
+        
+        for i in node.packet_list:
+            stuff["id"] = [i.packet_id]
+            stuff["data"] = [i.data]
+            stuff["priority"] = [i.priority]
+            stuff["Creation_time"] = [i.gen_time]
+            df = pd.DataFrame(stuff)
+            with pd.ExcelWriter(file_name) as writer:
+                df.to_excel(writer , sheet_name = sheet , index=False)

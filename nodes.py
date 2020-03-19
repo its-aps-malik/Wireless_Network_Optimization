@@ -32,8 +32,9 @@ class Nodes(Thread):
         
         # creating packets
         add_log("creating packets for - " + str(self.node_id))
+        
         for i in range(10):
-            self.packet_list.append(Packet())
+            self.packet_list.append(Packet(time()))
             
         add_log("packets created for - " + str(self.node_id))
         generated_data_to_excel(self , "Generated data")
@@ -41,43 +42,53 @@ class Nodes(Thread):
         j=0
         while flag :
             
-            #print((self.packet_list[j]).packet_id + "\t" + (self.packet_list[j]).data)
             j=j+1
             if j == 9:
                 j=0
                 add_log("Node " + str(self.node_id) + " stopped")
                 flag= False
 
+
     def get_node_id(self):
         return(self.node_id)
+
 
     def set_r_energy(self, energy):# this method sets node's recieving energy value
         self.r_energy = energy
 
+
     def set_s_energy(self, energy):# this method sets node's sending energy value
         self.s_energy = energy
+
 
     def get_r_energy(self):# this method returns node's recieving energy value
         return(self.r_energy)
 
+
     def get_s_energy(self):# this method returns node's sending energy value
         return(self.s_energy)
+
 
     def get_packets_to_send(self):# this method returns total no of packets remaining that a node needs to send
         return(self.packets_to_send)
 
+
     def get_connected_nodes(self):# this method returns all connected nodes
         return(self.connected_nodes)
+
 
     def set_rx_node(self,node):# this node sets the node to which data is to be send by current node
         self.node_to_send = node
     
+
     def send_packet(self, rx_node):
         rx_node = self.node_to_send
         print("sending data to " + str(rx_node))
 
+
     def recieve_packet(self):
         print("recieving packets...")
+
 
 def create_network_tree(total_nodes):
 
@@ -101,4 +112,3 @@ def create_network_tree(total_nodes):
     add_log("Network created")
 
     create_graph(connected_nodes)
-

@@ -17,13 +17,12 @@ def changeLater():
 
 def loadUI():
 
-    root = Tk()
+    root = Tk(screenName=":0")
 
 
     root.title("Wireless Netework Simulator")
     root.geometry("800x600")
     root.resizable(0, 0)
-
 
     menubar = Menu(root)
     root.config(menu=menubar)
@@ -38,9 +37,7 @@ def loadUI():
     editmenu.add_command(label="Undo" , command=changeLater)
     editmenu.add_command(label="Redo" , command=changeLater)
 
-
     status_notification = Label(root , text="some crap..." , bg = "green" , bd = 2 , relief = SUNKEN , anchor=W).pack(side = BOTTOM , fill = X )
-
 
     label1 = Label(root , text="Enter no. of nodes : ").pack()
 
