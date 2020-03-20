@@ -3,7 +3,8 @@ from time import *
 from random import *
 from file_creator import *
 from packets import *
-
+from collections import deque
+from transfer_algos import *
 
 ###... (    ALL VARIABLES ARE DEFINED BELOW    ) ...###
 node_list = []
@@ -25,32 +26,41 @@ class Nodes(Thread):
         self.node_to_send = node_to_send
         self.connected_nodes = connected_nodes
         self.packet_list = []
+        self.fcfs_buffer = deque()
+        self.buffer_0 = deque()
+        self.buffer_1 = deque()
+        self.buffer_2 = deque()
 
-    def run (self):  #this methos is executed when a thread is started
+    def run (self):  #this method is executed when a thread is started
         
         flag=True
         add_log("Node " + str(self.node_id) + " started")
+        print("Node " + str(self.node_id) + " started")
 
-        
         # creating packets
         add_log("creating packets for - " + str(self.node_id))
+        print("creating packets for - " + str(self.node_id))
         
-        for i in range(10):
+        for i in range(10):            
             self.packet_list.append(Packet(time()))
             
+            # adding data to excel file...
+            generated_data_to_excel(self , "Generated data")
+  
         add_log("packets created for - " + str(self.node_id))
-        
-        
-        # adding data to excel file...
-        generated_data_to_excel(self , "Generated data")
+        print("packets created for - " + str(self.node_id))
 
+        #asdasdasdadasd
+        
+        # stopping nodes here
         j=0
         while flag :
             
             j=j+1
             if j == 9:
                 j=0
-                add_log("Node " + str(self.node_id) + " stopped")
+                on_finish("Node " + str(self.node_id) + " stopped")
+                print("Node " + str(self.node_id) + " stopped")
                 flag= False
 
 
@@ -111,9 +121,7 @@ def create_network_tree(total_nodes):
         network_list.append(random_from_node_list)
     
 
-    for i in range(len(connected_nodes)):
-        print(connected_nodes[i]) 
-
     add_log("Network created")
+    print("Network created")
 
     create_graph(connected_nodes)

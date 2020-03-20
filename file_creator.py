@@ -34,16 +34,14 @@ def add_log(data):
     log_file.close()
 
 
-def write_to_xlsx(node):
-    print()
-
-
 def on_start(data):
     add_log(data)
+    print(data)
 
 
 def on_finish(data):
     add_log(data)
+    print(data)
 
 
 def create_graph(node_connection_list):
@@ -67,6 +65,7 @@ def create_graph(node_connection_list):
 
     fig.write_html("/home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "/network_diagram.html")
     add_log("Network diagram saved at  :-  '/home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "' as 'network_diagram.html'")
+    print("Network diagram saved at  :-  '/home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "' as 'network_diagram.html'")
 
 
 def create_excel_file(node):
@@ -74,47 +73,55 @@ def create_excel_file(node):
         abc = "touch /home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "/sink.xlsx"
         os.system(abc)
         add_log("sink.xlsx created")
+        print("sink.xlsx created")
     else:
         abc = "touch /home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "/node" + str(node.node_id + 1) + ".xlsx"
         os.system(abc)
-        add_log("/node" + str(node.node_id + 1) + ".xlsx created")
+        add_log("node" + str(node.node_id + 1) + ".xlsx created")
+        print("node" + str(node.node_id + 1) + ".xlsx created")
 
 
 def generated_data_to_excel(node , sheet):
-    k=0
+    k = True
     if node.node_id == -1:
         
         file_name = "/home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "/sink.xlsx"
         stuff = dict()
-        for i in node.packet_list:
-            stuff["id"] = [i.packet_id]
-            stuff["data"] = [i.data]
-            stuff["priority"] = [i.priority]
-            stuff["Creation_time"] = [i.gen_time]
-            if k == 0:
-                df = pd.DataFrame(stuff)
-            if k>0:
-                main_df = pd.read_excel(file_name , sheet_name=sheet)
-                df_curr = pd.DataFrame(stuff)
-                df = main_df.append(df_curr)
-            with pd.ExcelWriter(file_name) as writer:
-                df.to_excel(writer , sheet_name = sheet , index=False)
-            k+=1
+        
+        stuff["id"] = [node.packet_list[-1].packet_id]
+        stuff["data"] = [node.packet_list[-1].data]
+        stuff["priority"] = [node.packet_list[-1].priority]
+        stuff["Creation_time"] = [node.packet_list[-1].gen_time]
+        try :
+            main_df = pd.read_excel(file_name , sheet_name=sheet)
+        except :
+            df = pd.DataFrame(stuff)
+        
+        if main_df.empty == False:
+            df_curr = pd.DataFrame(stuff)
+            df = main_df.append(df_curr)
+        
+        with pd.ExcelWriter(file_name) as writer:
+            df.to_excel(writer , sheet_name = sheet , index=False)
+
     else:
         
         file_name = "/home/anant/Desktop/Wireless_Network_Optimization_Results/" + project_name + "/node" + str(node.node_id + 1) + ".xlsx"
         stuff = dict()
-        for i in node.packet_list:
-            stuff["id"] = [i.packet_id]
-            stuff["data"] = [i.data]
-            stuff["priority"] = [i.priority]
-            stuff["Creation_time"] = [i.gen_time]
-            if k == 0:
-                df = pd.DataFrame(stuff)
-            if k>0:
-                main_df = pd.read_excel(file_name , sheet_name=sheet)
-                df_curr = pd.DataFrame(stuff)
-                df = main_df.append(df_curr)
-            with pd.ExcelWriter(file_name) as writer:
-                df.to_excel(writer , sheet_name = sheet , index=False)
-            k+=1
+        
+        stuff["id"] = [node.packet_list[-1].packet_id]
+        stuff["data"] = [node.packet_list[-1].data]
+        stuff["priority"] = [node.packet_list[-1].priority]
+        stuff["Creation_time"] = [node.packet_list[-1].gen_time]
+        try :
+            main_df = pd.read_excel(file_name , sheet_name=sheet)
+        except :
+            df = pd.DataFrame(stuff)
+            k = False
+        
+        if k:
+            df_curr = pd.DataFrame(stuff)
+            df = main_df.append(df_curr)
+        
+        with pd.ExcelWriter(file_name) as writer:
+            df.to_excel(writer , sheet_name = sheet , index=False)
