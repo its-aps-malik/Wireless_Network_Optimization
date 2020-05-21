@@ -1,7 +1,6 @@
-import gui
-from time import *
-from file_creator import *
+from gui import loadUI
+from file_creator import make_project
 
 make_project()
 
-gui.loadUI()
+loadUI() 

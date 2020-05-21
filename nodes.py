@@ -1,10 +1,9 @@
-from threading import *
-from time import *
-from random import *
-from file_creator import *
-from packets import *
+from threading import Thread
 from collections import deque
-from transfer_algos import *
+from random import randint
+from file_creator import add_log , create_graph , data_to_excel
+from time import sleep
+
 
 ###... (    ALL VARIABLES ARE DEFINED BELOW    ) ...###
 node_list = []
@@ -32,36 +31,18 @@ class Nodes(Thread):
         self.buffer_2 = deque()
 
     def run (self):  #this method is executed when a thread is started
-        
-        flag=True
+                
         add_log("Node " + str(self.node_id) + " started")
         print("Node " + str(self.node_id) + " started")
 
-        # creating packets
-        add_log("creating packets for - " + str(self.node_id))
-        print("creating packets for - " + str(self.node_id))
-        
-        for i in range(10):            
-            self.packet_list.append(Packet(time()))
-            
-            # adding data to excel file...
-            generated_data_to_excel(self , "Generated data")
-  
-        add_log("packets created for - " + str(self.node_id))
-        print("packets created for - " + str(self.node_id))
+        # transfering data from packet_list to fcfs_buffer
+        for i in range(len(self.packet_list)):
+            self.fcfs_buffer.append(self.packet_list[i])
 
-        #asdasdasdadasd
-        
-        # stopping nodes here
-        j=0
-        while flag :
-            
-            j=j+1
-            if j == 9:
-                j=0
-                on_finish("Node " + str(self.node_id) + " stopped")
-                print("Node " + str(self.node_id) + " stopped")
-                flag= False
+        self.fcfs_transfer()
+
+        print("node-"+str(self.node_id)+" stopped...")
+
 
 
     def get_node_id(self):
@@ -92,20 +73,52 @@ class Nodes(Thread):
         return(self.connected_nodes)
 
 
-    def set_rx_node(self,node):# this node sets the node to which data is to be send by current node
+    def set_rx_node(self, node):# this node sets the node to which data is to be send by current node
         self.node_to_send = node
     
 
-    def send_packet(self, rx_node):
-        rx_node = self.node_to_send
-        print("sending data to " + str(rx_node))
+    def recieve_packet(self, data, node, algo):# this method is initiated whenever a node sends data to another node
+        data_to_excel(self, data, algo+"-recieved")
+        self.fcfs_buffer.append(data)
+        self.set_r_energy(energy=0)
+        print("data recieved from node " + str(node.node_id))
 
 
-    def recieve_packet(self):
-        print("recieving packets...")
+    def send_packet(self, data, algo):# this method trys to send data to next node untill it is successfully sent
+        flag = True
+        while(flag):
+            if(self.node_to_send.get_r_energy() == 0):
+                print("node "+str(self.node_id)+" sending data to " + str(self.node_to_send.node_id))
+                data_to_excel(self, data, algo+"-send")
+                self.node_to_send.set_r_energy(energy=1)
+                self.node_to_send.recieve_packet(data, self, algo)
+                sleep(1)
+                flag=False
+            else:
+                sleep_val = randint(1, 5)
+                print("receiving node busy - trying after "+str(sleep_val)+" seconds...")
+                sleep(sleep_val)
+        return "success"
 
 
-def create_network_tree(total_nodes):
+    def fcfs_transfer(self):# this method uses FCSF to transfer data
+        print("\n\ndata transfer via FCFS started...\n\n")
+
+        while(len(self.fcfs_buffer)!=0):
+                status = self.send_packet(self.fcfs_buffer[-1], "FCFS")
+                if(status == "success"):
+                    self.fcfs_buffer.pop()
+
+        print("\n\ndata transfer via FCFS completed...\n\n")
+
+    
+    def selective_drop_transfer(self):# this method uses Selective Drop to transfer data
+        print("lol")
+
+    
+
+
+def create_network_tree(total_nodes):# this node creates the random network during each run
 
     temp_node_list = node_list.copy()
     random_from_node_list = None
